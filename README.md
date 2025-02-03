@@ -15,11 +15,11 @@ Inferencing can be performed using the code in **main.py** and **func.py**.
 #### Create Runs
 After loading the processed prediction results, we randomly sample 100 times and save the results in the runs folders.
 #### Bias Mitigation
-The **evaluation** function evaluates performances of all 5 frameworks given the runs data and specified ICP hyperparameters.\n
+The **evaluation** function evaluates performances of all 5 frameworks given the runs data and specified ICP hyperparameters.  
 The **figure2**, **figure3**, and **test** functions create Figure 2, 3, and hypothesis tests in each dataset respectively.
 #### Decision Threshold Optimization
-The **simulate_data** function generates the simulation data, the **visualize_simulation** function produces Supplementary Figure 1.
-The **alpha_calsize** function evaluates the changes in metrics against the changes in both confidence levels and calibration sizes, the **plot_3d** function produces Figure 4.
+The **simulate_data** function generates the simulation data, the **visualize_simulation** function produces Supplementary Figure 1.  
+The **alpha_calsize** function evaluates the changes in metrics against the changes in both confidence levels and calibration sizes, the **plot_3d** function produces Figure 4.  
 The **adjustable_alpha** function evaluates the changes in metrics against the changes in confidence levels, the **plot_alpha** function produces Figure 5.
 #### Error Analysis
 The **plot_phat_distribution** function produces Figure 6.
