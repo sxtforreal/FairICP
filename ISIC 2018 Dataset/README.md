@@ -1,5 +1,5 @@
-Use data_process.py to create prediction results data from 4 raw data files. 2 from CheXpert and 2 from the previous work of B.Glocker et al.
+Use data_process.py to create prediction results data from 2 raw data files from the previous work of T.Kalb et al.
 
-Patient demographic information (CHEXPERT DEMO.xlsx) and imaging dataset (train_CheXpert.csv) can be downloaded from [CheXpert](https://stanfordmlgroup.github.io/competitions/chexpert/).
+[ISIC Challenge 2018](https://challenge.isic-archive.com/data/#2018).
 
-[chexpert_split_2021_08_20.csv](https://github.com/biomedia-mira/chexploration/tree/main/datafiles/chexpert) and [predictions.test.csv](https://imperialcollegelondon.app.box.com/s/bq87wkuzy14ctsyf8w3hcikwzu8386jj/folder/149074014566) are provided by B.Glocker et al.
+[metadata.csv](https://github.com/tkalbl/RevisitingSkinToneFairness/blob/main/data/ISIC2018/ISIC2018_Task3_Training_Input/metadata.csv) and [predictions_01DataShift00Compare41.csv](https://github.com/tkalbl/RevisitingSkinToneFairness/blob/main/predictions/predictions_01DataShift00Compare41.csv) are provided by T.Kalb et al.
