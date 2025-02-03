@@ -1,6 +1,5 @@
 import pandas as pd
 from func import (
-    icmnicm_pred,
     get_runs,
     evaluation,
     test,
@@ -17,11 +16,7 @@ from func import (
 
 ##### Data prep
 ## ICM/NICM
-icm_data_dir = "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/icmnicm/sax/"
-icm_model_dir = (
-    "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/ckpts/icmnicm/"
-)
-icm_preds = icmnicm_pred(icm_data_dir, icm_model_dir)
+icm_preds = pd.read_csv("./icmnicm_preds.csv")
 icm_runs_dir = (
     "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/data/icmnicm/runs/"
 )
