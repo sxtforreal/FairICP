@@ -1,4 +1,4 @@
-
+Use data_process.py to create prediction result data from 4 raw data files. 2 from CheXpert and 2 from the previous work of B.Glocker et al.
 
 Patient demographic information (CHEXPERT DEMO.xlsx) and imaging dataset (train_CheXpert.csv) can be downloaded from [CheXpert](https://stanfordmlgroup.github.io/competitions/chexpert/).
 
