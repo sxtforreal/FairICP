@@ -10,7 +10,6 @@ from scipy.stats import ttest_rel
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import seaborn as sns
-
 import config
 from dataset import icmDataModule
 from model import icm_pred
@@ -19,7 +18,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 ### Data prep
-# ICM/NICM (all predictions)
+# ICM/NICM
 def icmnicm_pred(data_dir, model_dir):
     """Load the trained icmnicm model, randomly split all test data into calibration set and test set for N times, predict."""
 
@@ -81,10 +80,9 @@ def icmnicm_pred(data_dir, model_dir):
     )
     out_df = pd.merge(test_df, pred_df, on="Accession_Number", how="inner")
     out_df.to_csv(
-        f"/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/data/icmnicm/icmnicm_preds.csv",
+        f"./icmnicm_preds.csv", # your dir here
         index=False,
     )
-
     return out_df
 
 
@@ -141,7 +139,6 @@ def predicted_labels(df, attribute_col):
     return calibration_data, test_data
 
 
-# All predictions -> N random splits
 def get_runs(test_predictions, attribute_col, N, test_ratio, runs_dir):
     for i in range(N):
         # Add a 'run' column to identify the iteration
@@ -439,6 +436,9 @@ def ROC(run, attribute_col, yhat_col):
 
 
 def evaluation(alpha, delta, runs_dir, save_dir, attribute_col, num):
+    """
+    Given the runs data and specified hyperparameters ['alpha', 'delta', 'num'], evaluate 5 unfairness mitigation frameworks.
+    """
     base = []
     base_cal = []
     roc = []
@@ -474,8 +474,8 @@ def evaluation(alpha, delta, runs_dir, save_dir, attribute_col, num):
     icp_sp_.to_csv(save_dir + "icp_sp.csv", index=False)
 
 
-### Hypothesis tests
-def visualization(dfs, labels, metrics, group_names, super_title):
+### Performances & Bias Mitigation
+def figure2(dfs, labels, metrics, group_names, super_title):
 
     # Number of subplots
     num_metrics = len(metrics)
@@ -566,99 +566,7 @@ def visualization(dfs, labels, metrics, group_names, super_title):
     plt.show()
 
 
-def visualization_gaps(dfs, labels, metrics, n_groups):
-
-    # Define the colors
-    colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
-
-    # Combine all DataFrames with a label
-    combined_data = []
-    for df, label in zip(dfs, labels):
-        df = df.copy()
-        df = df[metrics]
-        diff_data = []
-
-        if n_groups == 2:
-            # Absolute difference for every two rows
-            for i in range(0, len(df), n_groups):
-                if i + 1 < len(df):
-                    diff_data.append((df.iloc[i] - df.iloc[i + 1]).abs())
-
-        elif n_groups == 3:
-            # Mean absolute pairwise difference for every three rows
-            for i in range(0, len(df), n_groups):
-                if i + 2 < len(df):
-                    pairwise_diffs = [
-                        (df.iloc[i] - df.iloc[i + 1]).abs(),
-                        (df.iloc[i] - df.iloc[i + 2]).abs(),
-                        (df.iloc[i + 1] - df.iloc[i + 2]).abs(),
-                    ]
-                    mean_diff = pd.concat(pairwise_diffs, axis=1).mean(axis=1)
-                    diff_data.append(mean_diff)
-
-        # Add processed differences to DataFrame
-        if diff_data:
-            diff_df = pd.DataFrame(diff_data)
-            diff_df["Source"] = label
-            combined_data.append(diff_df)
-
-    # Combine all processed DataFrames
-    combined_df = pd.concat(combined_data)
-
-    # Compute mean and standard error for each metric per group per DataFrame
-    stats = []
-    for metric in metrics:
-        grouped = combined_df.groupby("Source")[metric]
-        metric_stats = grouped.agg(["mean", "sem"]).reset_index()
-        metric_stats["Metric"] = metric
-        stats.append(metric_stats)
-    stats_df = pd.concat(stats)
-
-    # Create the plot
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    # Prepare bar positions
-    x_positions = np.arange(len(metrics))
-    num_sources = len(labels)
-    width = 0.8 / num_sources  # Width of each bar
-
-    # Plot bars for each source
-    for i, source in enumerate(labels):
-        source_data = stats_df[stats_df["Source"] == source]
-        means = source_data["mean"]
-        errors = source_data["sem"]
-        color = colors[i % len(colors)]
-
-        # Adjust bar positions for side-by-side alignment
-        ax.bar(
-            x_positions + i * width - (num_sources / 2 - 0.5) * width,
-            means,
-            yerr=errors,
-            width=width,
-            color=color,
-            label=source,
-            capsize=5,
-        )
-
-    # Set x-ticks to metrics
-    ax.set_xticks(x_positions)
-    ax.set_xticklabels(metrics, fontsize=12)
-    ax.set_ylabel("Absolute Difference", fontsize=14)
-    ax.set_title("Performance Gap by Metric", fontsize=16)
-    ax.grid(axis="y")
-
-    # Add a legend
-    ax.legend(title="Source", fontsize=12, loc="upper right")
-
-    # Ensure y-axis starts at 0
-    ax.set_ylim(bottom=0)
-
-    # Show the plot
-    plt.tight_layout()
-    plt.show()
-
-
-def visualization_improvement(base_df, alter_dfs, labels, metrics, group_names):
+def figure3(base_df, alter_dfs, labels, metrics, group_names):
 
     # Combine all DataFrames with a label
     combined_data = []
@@ -811,7 +719,7 @@ def test(base, alter):
         one_sided_paired_ttest(alter_dict[group], base_dict[group], "FPR", "less")
 
 
-### Lever 1: confidence level
+### Decision Threshold Optimization
 def adjustable_alpha(
     runs_dir,
     delta,
@@ -912,7 +820,7 @@ def plot_alpha(df1, df2):
         "Abstention Ratio",
         "ICP Implementation Cost",
     ]
-    plt_idx = ["A", "B", "C", "D", "E", "F"]
+    plt_idx = ["a", "b", "c", "d", "e", "f"]
     group_idx = ["White", "Asian", "Black"]
     fig, axes = plt.subplots(2, 3, figsize=(15, 10))
 
@@ -981,8 +889,6 @@ def plot_alpha(df1, df2):
     plt.show()
 
 
-### Lever 2: calibration size
-# Simulation
 def simulate_data(
     n_samples_group1,
     n_samples_group2,
@@ -1117,7 +1023,7 @@ def visualize_simulation(data):
         sns.histplot(
             incorrect["Phat"],
             bins=30,
-            color="red",
+            color="turquoise",
             alpha=0.7,
             label="Incorrect",
             kde=True,
@@ -1125,8 +1031,10 @@ def visualize_simulation(data):
         )
 
         # Aesthetics
-        axes[i].set_title(f"Group {group_names[group]} - Phat Distribution")
-        axes[i].set_xlabel("Phat")
+        axes[i].set_title(
+            f"Group {group_names[group]} - Prediction pobability distribution"
+        )
+        axes[i].set_xlabel("Prediction probability")
         axes[i].set_ylabel("Frequency")
         axes[i].legend()
 
@@ -1135,66 +1043,6 @@ def visualize_simulation(data):
     plt.show()
 
 
-def plot_logcalsize_vs_metrics(df, group_name=None):
-    # Add a new column for the log of calibration size
-    df["Log_Cal_Size"] = np.log10(df["Cal_Size"])
-    int_ticks = sorted(df["Log_Cal_Size"].astype(int).unique())
-    # Set up the figure with subplots for each metric
-    metrics = ["Accuracy", "TPR", "FPR", "Cost"]
-    fig, axes = plt.subplots(1, 4, figsize=(20, 4))
-
-    # Group by 'Group' to plot each group with different colors
-    groups = df["Group"].unique()
-
-    for i, metric in enumerate(metrics):
-        ax = axes[i]
-
-        for group in groups:
-            group_data = df[df["Group"] == group]
-
-            # Group by Log_Cal_Size and compute mean and standard error for each metric
-            log_alpha_group = group_data.groupby("Log_Cal_Size")[metric].agg(
-                ["mean", "sem"]
-            )
-
-            # Plot the data: error bars are given by standard error
-            if group_name:
-                ax.errorbar(
-                    log_alpha_group.index,
-                    log_alpha_group["mean"],
-                    yerr=log_alpha_group["sem"],
-                    fmt="o",
-                    label=f"{group_name[group]}",
-                    capsize=5,
-                    elinewidth=2,
-                    linestyle="-",
-                )
-            else:
-                ax.errorbar(
-                    log_alpha_group.index,
-                    log_alpha_group["mean"],
-                    yerr=log_alpha_group["sem"],
-                    fmt="o",
-                    label=f"Group {group}",
-                    capsize=5,
-                    elinewidth=2,
-                    linestyle="-",
-                )
-
-        # Labeling and aesthetics
-        ax.set_title(f"{metric} vs Calibration Sizes")
-        ax.set_xlabel("Calibration Sizes")
-        ax.set_ylabel(metric)
-        ax.set_xticks(int_ticks)
-        ax.set_xticklabels(int_ticks)
-        ax.legend()
-
-    # Adjust layout for better spacing
-    plt.tight_layout()
-    plt.show()
-
-
-# 3D
 def alpha_calsize(
     df_dir,
     attribute_col,
@@ -1366,7 +1214,7 @@ def plot_3d(df, x_col, y_col, z_col, group_col, figsize=(10, 10), degree=4):
     plt.show()
 
 
-# Diagnosis
+### Error Analysis
 def plot_phat_distribution(df1, df2, df3):
 
     def plot_single(df, ax, title):
