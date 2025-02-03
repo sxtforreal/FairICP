@@ -16,9 +16,9 @@ Inferencing can be performed using the codes in **main.py** and **func.py**.
 After loading the processed prediction results, we randomly sample 100 times and save the results in the runs folders using the **get_runs** function.
 #### Unfairness Mitigation Frameworks
 The following functions implement 5 unfairness mitigation frameworks on each dataset.  
-Base/Base_cal: **Base**  
-ROC: **ROC**  
-ICP_org/FairICP: **selective_risk**, **nlambda**, **invert_for_ub**, **p_ub**, **optimal_lambda**, **ICP**
+- Base/Base_cal: **Base**  
+- ROC: **ROC**  
+- ICP_org/FairICP: **selective_risk**, **nlambda**, **invert_for_ub**, **p_ub**, **optimal_lambda**, **ICP**
 #### Performances & Bias Mitigation
 The **evaluation** function evaluates performances of all 5 frameworks given on runs data.  
 The **figure2**, **figure3**, and **test** functions create Figure 2, 3, and hypothesis tests in each dataset respectively.
