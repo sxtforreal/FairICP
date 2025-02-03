@@ -19,7 +19,7 @@ The following functions implement 5 unfairness mitigation frameworks on each dat
 Base/Base_cal: **Base**  
 ROC: **ROC**  
 ICP_org/FairICP: **selective_risk**, **nlambda**, **invert_for_ub**, **p_ub**, **optimal_lambda**, **ICP**
-#### Bias Mitigation
+#### Performances & Bias Mitigation
 The **evaluation** function evaluates performances of all 5 frameworks given on runs data.  
 The **figure2**, **figure3**, and **test** functions create Figure 2, 3, and hypothesis tests in each dataset respectively.
 #### Decision Threshold Optimization
