@@ -36,7 +36,7 @@ class icm_pred(pl.LightningModule):
         )
         self.encoder.head = nn.Identity()
         self.weights = torch.load(
-            "/data/aiiih/projects/nakashm2/multimodal/Video_text_retrieval/exps/models/MSRVTTjsfusion_4f_stformer_pt-im21k/1019_093959/vid_encoder.pth"
+            "./vid_encoder.pth" # pre-trained weights here
         )
         self.encoder.load_state_dict(self.weights)
 
