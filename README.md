@@ -11,10 +11,11 @@ Since FairICP is a post-process/post-implementation framework, we directly used 
 3. ISIC Challenge 2018 - Task 3 (The International Skin Imaging Collaboration): T. Kalb et al pre-trained a disease detection model on ISIC Challenge 2018 - Task 3 Dataset <[Revisiting Skin Tone Fairness in Dermatological Lesion Classification](https://arxiv.org/abs/2308.09640v1)>. Data processing can be found in **ISIC 2018 Dataset** folder.
 
 ## Inference
-Inferencing can be performed using the code in **main.py** and **func.py**.
+Inferencing can be performed using the codes in **main.py** and **func.py**.
 #### Create Runs
 After loading the processed prediction results, we randomly sample 100 times and save the results in the runs folders using the **get_runs** function.
 #### Unfairness Mitigation Frameworks
+The following functions implement 5 unfairness mitigation frameworks on each dataset.  
 Base/Base_cal: **Base**  
 ROC: **ROC**  
 ICP_org/FairICP: **selective_risk**, **nlambda**, **invert_for_ub**, **p_ub**, **optimal_lambda**, **ICP**
