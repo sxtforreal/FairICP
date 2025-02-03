@@ -109,7 +109,7 @@ class icmDataModule(pl.LightningDataModule):
 
 
 if __name__ == "__main__":
-    data_dir = "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/icmnicm/sax/"
+    data_dir = "" # your dir here
     train_df = pd.read_csv(data_dir + "train_df.csv")
     val_df = pd.read_csv(data_dir + "val_df.csv")
     test_df = pd.read_csv(data_dir + "test_df.csv")
