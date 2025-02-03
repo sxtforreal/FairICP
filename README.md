@@ -23,3 +23,6 @@ The **alpha_calsize** function evaluates the changes in metrics against the chan
 The **adjustable_alpha** function evaluates the changes in metrics against the changes in confidence levels, the **plot_alpha** function produces Figure 5.
 #### Error Analysis
 The **plot_phat_distribution** function produces Figure 6.
+
+## Configuration
+Python 3.9.14
