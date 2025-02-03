@@ -4,8 +4,8 @@ from func import (
     get_runs,
     evaluation,
     test,
-    visualization,
-    visualization_improvement,
+    figure2,
+    figure3,
     adjustable_alpha,
     plot_alpha,
     simulate_data,
@@ -25,7 +25,7 @@ icm_preds = icmnicm_pred(icm_data_dir, icm_model_dir)
 icm_runs_dir = (
     "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/data/icmnicm/runs/"
 )
-# get_runs(icm_preds, "Female", 100, 0.5, icm_runs_dir)
+get_runs(icm_preds, "Female", 100, 0.5, icm_runs_dir)
 
 
 ## CheXpert
@@ -34,7 +34,7 @@ chexpert_preds = pd.read_csv(chexpert_data_dir)
 chexpert_runs_dir = (
     "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/data/chexpert/runs/"
 )
-# get_runs(chexpert_preds, "race_label", 100, 0.5, chexpert_runs_dir)
+get_runs(chexpert_preds, "race_label", 100, 0.5, chexpert_runs_dir)
 
 ## ISIC18
 isic18_data_dir = "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/data/isic18/isic18_preds.csv"
@@ -45,7 +45,7 @@ isic18_preds["Phat"] = isic18_preds.apply(
 isic18_runs_dir = (
     "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/data/isic18/runs/"
 )
-# get_runs(isic18_preds, "dark_skin", 100, 0.5, isic18_runs_dir)
+get_runs(isic18_preds, "dark_skin", 100, 0.5, isic18_runs_dir)
 
 ##### Unfairness mitigation methods
 ## ICM/NICM
@@ -64,7 +64,7 @@ isic18_save_dir = (
 )
 evaluation(0.1, 0.2, isic18_runs_dir, isic18_save_dir, "dark_skin", 5)
 
-##### Hypothesis tests
+##### Visualization and hypothesis tests
 ## ICM/NICM
 icm_base = pd.read_csv(
     "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/data/icmnicm/base.csv"
@@ -81,14 +81,14 @@ icm_icp_ag = pd.read_csv(
 icm_icp_sp = pd.read_csv(
     "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/data/icmnicm/icp_sp.csv"
 )
-visualization(
+figure2(
     [icm_base, icm_base_cal, icm_roc, icm_icp_ag, icm_icp_sp],
     ["Base", "Base_cal", "ROC", "ICP_org", "FairICP"],
     ["ACC", "TPR", "FPR"],
     ["Male", "Female"],
     "Metrics by Group (ICM/NICM)",
 )
-visualization_improvement(
+figure3(
     icm_base,
     [icm_base_cal, icm_roc, icm_icp_ag, icm_icp_sp],
     ["Base_cal", "ROC", "ICP_org", "FairICP"],
@@ -117,14 +117,14 @@ chexpert_icp_ag = pd.read_csv(
 chexpert_icp_sp = pd.read_csv(
     "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/data/chexpert/icp_sp.csv"
 )
-visualization(
+figure2(
     [chexpert_base, chexpert_base_cal, chexpert_roc, chexpert_icp_ag, chexpert_icp_sp],
     ["Base", "Base_cal", "ROC", "ICP_org", "FairICP"],
     ["ACC", "TPR", "FPR"],
     ["White", "Asian", "Black"],
     "Metrics by Group (CheXpert)",
 )
-visualization_improvement(
+figure3(
     chexpert_base,
     [chexpert_base_cal, chexpert_roc, chexpert_icp_ag, chexpert_icp_sp],
     ["Base_cal", "ROC", "ICP_org", "FairICP"],
@@ -153,14 +153,14 @@ isic18_icp_ag = pd.read_csv(
 isic18_icp_sp = pd.read_csv(
     "/home/sunx/data/aiiih/projects/sunx/clinical_projects/ICP/data/isic18/icp_sp.csv"
 )
-visualization(
+figure2(
     [isic18_base, isic18_base_cal, isic18_roc, isic18_icp_ag, isic18_icp_sp],
     ["Base", "Base_cal", "ROC", "ICP_org", "FairICP"],
     ["ACC", "TPR", "FPR"],
     ["Light", "Dark"],
     "Metrics by Group (ISIC18)",
 )
-visualization_improvement(
+figure3(
     isic18_base,
     [isic18_base_cal, isic18_roc, isic18_icp_ag, isic18_icp_sp],
     ["Base_cal", "ROC", "ICP_org", "FairICP"],
