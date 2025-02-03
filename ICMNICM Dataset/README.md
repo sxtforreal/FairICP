@@ -1,1 +1,1 @@
-
+**icmnicm_preds.csv** is the prediction results data that can be directly used for FairICP implementation. Because this is a private dataset, we choose not to disclose the model and codes. Please contact us if you have questions. 
