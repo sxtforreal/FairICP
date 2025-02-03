@@ -13,7 +13,11 @@ Since FairICP is a post-process/post-implementation framework, we directly used 
 ## Inference
 Inferencing can be performed using the code in **main.py** and **func.py**.
 #### Create Runs
-After loading the processed prediction results, we randomly sample 100 times and save the results in the runs folders.
+After loading the processed prediction results, we randomly sample 100 times and save the results in the runs folders using the **get_runs** function.
+#### Unfairness Mitigation Frameworks
+Base: **Base**
+ROC: **ROC**
+ICP_org/FairICP: **selective_risk**, **nlambda**, **invert_for_ub**, **p_ub**, **optimal_lambda**, **ICP**
 #### Bias Mitigation
 The **evaluation** function evaluates performances of all 5 frameworks given on runs data.  
 The **figure2**, **figure3**, and **test** functions create Figure 2, 3, and hypothesis tests in each dataset respectively.
