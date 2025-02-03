@@ -7,5 +7,5 @@ In this repository we release the code to implement FairICP.
 ## Dataset
 Since FairICP is a post-process/post-implementation framework, we directly used the prediction results from others' previous works. No model re-training is involved in our work. 
 1. ICM/NICM Cardiac MRI Data (Cleveland Clinic): This is a private dataset.
-2. CheXpert (Stanford Machine Learning Group): B. Glocker et al pre-trained a disease detection model on CheXpert Dataset <[Algorithmic encoding of protected characteristics in chest X-ray disease detection models](https://www.thelancet.com/journals/ebiom/article/PIIS2352-3964(23)00032-4/fulltext)>. We used their prediction results which can be found [here](https://imperialcollegelondon.app.box.com/s/bq87wkuzy14ctsyf8w3hcikwzu8386jj).
+2. CheXpert (Stanford Machine Learning Group): B. Glocker et al pre-trained a disease detection model on CheXpert Dataset <[Algorithmic encoding of protected characteristics in chest X-ray disease detection models](https://www.thelancet.com/journals/ebiom/article/PIIS2352-3964(23)00032-4/fulltext)>. We used their prediction results <prediction.test.csv> which can be found [here](https://imperialcollegelondon.app.box.com/s/bq87wkuzy14ctsyf8w3hcikwzu8386jj/folder/149074014566).
 3. ISIC Challenge 2018 - Task 3 (The International Skin Imaging Collaboration):
